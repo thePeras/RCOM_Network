@@ -12,10 +12,11 @@
 #include "connection.h"
 #include "login.h"
 #include "passive_mode.h"
+#include "file_transfer.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2){
-        printf("Usage: %s ftp://[<user>:<password>@]<host>[:port]/<url-path>\n", argv[0]);
+        printf("Usage: %s ftp://[<user>:<password>@]<host>[:<port>]/<url-path>\n", argv[0]);
     }
 
     ParsedURL components = parse_url(argv[1]);
@@ -54,16 +55,15 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
-//
-    //if (send_retr(connection_fd, components.path) < 0){
-    //    perror("send_retr()");
-    //    exit(-1);
-    //}
-//
-    //if (receive_file(passive_connection_fd, components.path) < 0){
-    //    perror("receive_file()");
-    //    exit(-1);
-    //}
+    if (start_transfer_command(connection_fd, components.path) < 0){
+        perror("send_retr()");
+        exit(-1);
+    }
+
+    if (receive_file(passive_connection_fd, components.path) < 0){
+        perror("receive_file()");
+        exit(-1);
+    }
 
     close(connection_fd);
     close(passive_connection_fd);

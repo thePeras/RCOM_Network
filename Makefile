@@ -11,7 +11,8 @@ BIN = bin/
 #HOST=rcom:rcom@netlab1.fe.up.pt
 HOST=ftp.up.pt
 
-FILE=files/crab.mp4
+#FILE=files/crab.mp4
+FILE=pub/kodi/apt/pre-release/ios/Release
 
 # Targets
 .PHONY: all

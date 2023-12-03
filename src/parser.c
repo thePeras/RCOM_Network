@@ -4,17 +4,17 @@
 
 #include "parser.h"
 
-ParsedURL parse_url(char *url){
+ParsedURL parse_url(char *url) {
     ParsedURL components;
     memset(&components, 0, sizeof(components));
 
     components.port = "21";
     components.username = "anonymous";
     components.password = "anonymous";
-    
+
     char *protocol = "ftp://";
     char *user_pass_delim = "@";
-    char *host_port_delim = ":/";
+    char *host_port_delim = ":";
     char *path_delim = "/";
 
     // Check if URL starts with 'ftp://'
@@ -35,30 +35,28 @@ ParsedURL parse_url(char *url){
         url = userPassEnd + 1;
     }
 
-    // Find host and port
-    char *hostPortDelim = strpbrk(url, host_port_delim);
-    if (hostPortDelim != NULL) {
-        *hostPortDelim = '\0';
+    // Find host and port if present
+    char *hostEnd = strstr(url, host_port_delim);
+    if (hostEnd != NULL) {
+        *hostEnd = '\0';
         components.host = url;
-        url = hostPortDelim + 1;
-
-        char *portStr = strchr(hostPortDelim + 1, ':');
-        if (portStr != NULL) {
-            *portStr = '\0';
-            portStr++;
-            components.port = portStr;
+        url = hostEnd + 1;
+        components.port = strtok(url, path_delim);
+        url = components.port + strlen(components.port) + 1;
+    } else {
+        hostEnd = strstr(url, path_delim);
+        if (hostEnd != NULL) {
+            *hostEnd = '\0';
+            components.host = url;
+            url = hostEnd + 1;
+        } else {
+            printf("Invalid URL format: host not found\n");
+            memset(&components, 0, sizeof(components)); // Reset components to zero/NULL
+            return components;
         }
     }
 
-    // Find path
-    components.path = strchr(url, *path_delim);
-    if (components.path != NULL) {
-        *components.path = '\0';
-        components.path++;
-    } else {
-        printf("Invalid URL format: path not found\n");
-        memset(&components, 0, sizeof(components)); // Reset components to zero/NULL
-    }
+    components.path = url;
 
     return components;
 }
