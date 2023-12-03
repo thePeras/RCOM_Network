@@ -1,4 +1,12 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
 //  Positive Completion reply codes
 #define CODE_SERVICE_READY 220
 #define CODE_LOGGED_IN 230
