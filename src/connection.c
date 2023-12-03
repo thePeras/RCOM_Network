@@ -26,6 +26,10 @@ int connect_to_host(char *host, char *port) {
     }
 
     for (p = servinfo; p != NULL; p = p->ai_next) {
+        if (p->ai_family == AF_INET6) {
+            continue;
+        }
+
         // open a TCP socket
         if ((socket_fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0) {
             perror("socket");
@@ -39,7 +43,6 @@ int connect_to_host(char *host, char *port) {
             continue;
         }
 
-        // estalished connection successfully
         break; 
     }
 

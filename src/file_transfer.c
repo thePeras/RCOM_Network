@@ -28,7 +28,7 @@ int start_transfer_command(int fd, char *file_path){
     }
 
     int file_size;
-    sscanf(message, "%*[^)] (%d bytes)", &file_size);
+    sscanf(message, "%*[^(](%d", &file_size);
     printf("Sending file with size: %d\n", file_size);
 
     while(code != CODE_CLOSING_DATA_CONNECTION){
@@ -74,7 +74,7 @@ int receive_file(int fd, char *file_path){
 
     fclose(file);
 
-    printf("File %s received\n", file_name);
-    printf("Total bytes received: %d\n", total_bytes);
+    printf("File named '%s' received\n", file_name);
+    printf("Bytes received: %d\n", total_bytes);
     return 0;
 }

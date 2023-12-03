@@ -12,7 +12,8 @@ BIN = bin/
 HOST=ftp.up.pt
 
 #FILE=files/crab.mp4
-FILE=pub/kodi/apt/pre-release/ios/Release
+FILENAME=Release
+FILE=pub/kodi/apt/pre-release/ios/$(FILENAME)
 
 # Targets
 .PHONY: all
@@ -28,3 +29,4 @@ run: $(BIN)/main
 .PHONY: clean
 clean:
 	rm -f $(BIN)/main
+	rm -f $(FILENAME)
