@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
 #include <arpa/inet.h>
 
 #include "parser.h"
@@ -16,7 +15,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 2){
-        printf("Usage: %s ftp://[<user>:<password>@]<host>[:<port>]/<url-path>\n", argv[0]);
+        printf("Usage: %s ftp://[<username>:<password>@]<host>[:<port>]/<url-path>\n", argv[0]);
     }
 
     ParsedURL components = parse_url(argv[1]);

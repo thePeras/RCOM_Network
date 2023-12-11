@@ -10,7 +10,7 @@ ParsedURL parse_url(char *url) {
 
     components.port = "21";
     components.username = "anonymous";
-    components.password = "anonymous";
+    components.password = "";
 
     char *protocol = "ftp://";
     char *user_pass_delim = "@";
