@@ -8,12 +8,21 @@ SRC = src/
 INCLUDE = include/
 BIN = bin/
 
-#HOST=rcom:rcom@netlab1.fe.up.pt
 HOST=ftp.up.pt
-
-#FILE=files/crab.mp4
 FILENAME=Release
 FILE=pub/kodi/apt/pre-release/ios/$(FILENAME)
+
+#HOST=rcom:rcom@netlab1.fe.up.pt
+#FILENAME=crab.mp4
+#FILE=$(FILENAME)
+
+#HOST=ftp.up.pt
+#FILENAME=elisp-manual-21-2.8.tar.gz
+#FILE=pub/gnu/emacs/$(FILENAME)
+
+#HOST=demo:password@test.rebex.net
+#FILENAME=readme.txt
+#FILE=$(FILENAME)
 
 # Targets
 .PHONY: all
