@@ -22,4 +22,4 @@ route add default gw 172.16.31.254
 
 read -n 1 -p "Configured for exp4, want more? Press any key when ready..."
 
-echo 'nameserver 172.16.2.1' > /etc/resolv.conf
+echo 'nameserver 193.136.28.10' > /etc/resolv.conf
