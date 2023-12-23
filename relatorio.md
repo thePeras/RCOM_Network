@@ -4,12 +4,11 @@ Segundo projeto da unidade curricular Redes de Computadores (RCOM)
 
 ### Autores
 
-Francisco Pires da Ana - up202108762
-João Torre Pereira - up202108848
+Francisco Pires da Ana (up202108762) & João Torre Pereira (up202108848)
 
 ## Introdução
 
-Este projeto teve como objetivo o desenvolvimento e teste de um programa de _download_, usando o protocolo FTP, para aplicação numa rede configurada e estudada durante as aulas práticas. Em suma, no fim deste trabalho devemos ser capazes de transferir um ficheiro da internet utilizando uma rede configurada e um programa desenvolvido por nós.
+Este projeto teve como objetivo o desenvolvimento e teste de um programa de _download_, usando o protocolo FTP, para aplicação numa rede configurada e estudada durante as aulas práticas. Em suma, no fim deste trabalho devemos ser capazes de transferir um ficheiro da internet utilizando uma rede configurada utilizando um programa desenvolvido por nós.
 
 ## Parte 1 - Aplicação de Download
 
@@ -86,12 +85,15 @@ close(connection_fd);
 close(passive_connection_fd);
 ```
 
-Ao longo da leitura dos bytes da conexão passiva, escreve-ve para um ficheiro no disco com o mesmo nome que o ficheiro inicial.
+Ao longo da leitura dos bytes da conexão passiva, escreve-ve para um ficheiro no disco com o mesmo nome que o ficheiro requisitado.
 No fim da transferênia fecham-se as duas conexões TCP com o função ```close```.
 
 ### Sucesso do _Download_
 
-(Report of a successful download, including print-screen of Wireshark logs showing the FTP packets)
+Testámos o funcionamento deste programa transferindo vários ficheiros, de diferetes tamanhos. O programa mostrou-se funcional, correto e consistente.
+Mostramos, seguidamente, a execução bem sucedida de uma transferência:
+
+<img src="https://hackmd.io/_uploads/Sya1bsEwa.jpg" height="300">
 
 ## Parte 2 - Configuração e estudo de uma rede
 
@@ -99,29 +101,29 @@ No fim da transferênia fecham-se as duas conexões TCP com o função ```close`
 
 #### Arquitetura da rede
 
-<img src="https://hackmd.io/_uploads/S1rGZ_4U6.png" height="300" />
+<img src="https://hackmd.io/_uploads/HktDbj4wp.png" height="300" />
 
-Existem os dispositivos `tux33` e `tux34` conectados a um switch.
+Existem os dispositivos `gnu33` e `gnu34` conectados a um switch.
 
 #### Objetivos da Experiência
 
-Esta experiência tem como objetivo a configuração dos endereços IP de dois computadores -
-tux33 `(172.16.30.1)` e tux34 `(172.16.30.254)` - ligados a uma _switch_.
+Esta experiência tem como objetivo a configuração dos endereços IP dos dois computadores -
+gnu33 `(172.16.30.1)` e gnu34 `(172.16.30.254)` - ligados a um _switch_.
 Pretende-se ainda analisar o funcionamento do protocolo ARP.
 
 #### Principais comandos de configuração
 
 ```bash!
-ifconfig eth0 172.16.30.1/24 #tux33
-ifconfig eth0 172.16.30.254/24 #tux34
+ifconfig eth0 172.16.30.1/24 #gnu33
+ifconfig eth0 172.16.30.254/24 #gnu34
 ```
 
 #### Análise dos logs
 
-Tratou-se depois de verificar a conectividade entre as duas máquinas, gerando sinais do `tux33` para o `tux34`
+Tratou-se depois de verificar a conectividade entre as duas máquinas, gerando sinais do `gnu33` para o `gnu34`
 
 ```bash
-ping 172.16.30.254 #tux33
+ping 172.16.30.254 #gnu33
 ```
 
 > `ping <ip>` gera pacotes de 64 bytes enviados da máquina local para a máquina identificada pelo ip especificado.
@@ -136,9 +138,9 @@ arp -a
 
 > Os pacotes ARP (ARP packets) são mensagens de solicitação e resposta trocadas entre dispositivos em uma rede local para proceder ao mapeamento de andereços MAC e endereços IP.
 
-Analisaram-se os pacotes de request assim como os respetivos acks de reposta e conclui-se que a partir de dispositvo `tux33` é possível chegar ao `tux34`, dado estes dois estarem conectados no switch.
+Analisaram-se os pacotes de request assim como os respetivos acks de reposta e conclui-se que a partir de dispositvo `gnu33` é possível chegar ao `gnu34`, dado estes dois estarem conectados no switch.
 
-No processo do comando _ping_, o `tux33` envia primeiramente um pedido ARP para descobrir o endereço MAC do dispositivo identificado no endereço IP do comando. Só após receber o endereço MAC do `tux34` são mandados os pactos _ping_.
+No processo do comando _ping_, o `gnu33` envia primeiramente um pedido ARP para descobrir o endereço MAC do dispositivo identificado no endereço IP do comando. Só após receber o endereço MAC do `gnu34` são mandados os pactos _ping_.
 
 ### Experiência 2 - Implementar duas _bridges_ num _switch_
 
@@ -146,17 +148,17 @@ No processo do comando _ping_, o `tux33` envia primeiramente um pedido ARP para 
 
 <img src="https://hackmd.io/_uploads/HkHF-_VI6.png" height="300" />
 
-No mesmo switch existem duas subnetworks separadas, a `bridge30` e a `bridge31`, os dispositivos anteriormente conectaods pertencem à primeira e liga-se um novo dispositivo `tux32` à segunda subnetwork `bridge31`.
+No mesmo switch existem duas subnetworks separadas, a `bridge30` e a `bridge31`, os dispositivos anteriormente conectaods pertencem à primeira e liga-se um novo dispositivo `gnu32` à segunda subnetwork `bridge31`.
 
 #### Objetivos da Experiência
 
 Esta experiência tem como objetivo a configuração de duas LANs (_Local Area Network_), implementando duas _bridges_ no _switch_ - `bridge30` e `bridge31`.
-À primeira deverão estar ligadas as máquinas `tux33` e `tux34` com os endereços IP configurados na experiência anterior, ao passo que à segunda _bridge_ deverá estar ligado o computador tux32, com o endereço IP `172.16.31.1`.
+À primeira deverão estar ligadas as máquinas `gnu33` e `gnu34` com os endereços IP configurados na experiência anterior, ao passo que à segunda _bridge_ deverá estar ligado o computador gnu32, com o endereço IP `172.16.31.1`.
 
 #### Principais comandos de configuração
 
 ```bash!
-# tux32
+# gnu32
 ifconfig eth0 172.16.31.1/24
 ```
 
@@ -178,17 +180,17 @@ ifconfig eth0 172.16.31.1/24
 
 #### Análise dos logs
 
-Depois da configuração verificámos que há 2 domínios de _broadcast_. A partir do `tux33` conseguimos dar _ping_ ao `tux34` mas não ao `tux32` (sendo inclusivamente reportada uma reposta negativa).
+Depois da configuração verificámos que há 2 domínios de _broadcast_. A partir do `gnu33` conseguimos dar _ping_ ao `gnu34` mas não ao `gnu32` (sendo inclusivamente reportada uma reposta negativa).
 
 ```bash!
-# tux33
-ping 172.13.30.254     # para tux34, funciona
-ping 172.13.31.1       # para tux32, "unreacheable network"
+# gnu33
+ping 172.13.30.254     # para gnu34, funciona
+ping 172.13.31.1       # para gnu32, "unreacheable network"
 ```
 
 Ao executar o comando responsável por dar _ping_ a todos os dispositivos associados a uma _broadcast_ concluímos que os dispoitivos associados à `bridge30` estão efetivamente isolados dos dispositivos associados à`bridge31`.
-Isto verifica-se analisando os ficheiros, porque o comando `ping -b 172.16.30.255` executado no tux33 gera frames do tux34 para o tux33 mas não gera nenhum tipo de sinal para o tux32.
-Já o comando `ping -b 172.13.31.255` executado no `tux32` gera sinais no mesmo (sozinho na sua _broadcast_) mas não tem qualquer interferência com os `tux33` e `tux34`.
+Isto verifica-se analisando os ficheiros, porque o comando `ping -b 172.16.30.255` executado no gnu33 gera frames do gnu34 para o gnu33 mas não gera nenhum tipo de sinal para o gnu32.
+Já o comando `ping -b 172.13.31.255` executado no `gnu32` gera sinais no mesmo (sozinho na sua _broadcast_) mas não tem qualquer interferência com os `gnu33` e `gnu34`.
 Verificamos assim que se configuraram 2 sub-redes diferentes.
 
 ### Experiência 3 - Configurar um _router_ em Linux
@@ -197,20 +199,20 @@ Verificamos assim que se configuraram 2 sub-redes diferentes.
 
 <img src="https://hackmd.io/_uploads/BkfJGdNLp.png" height="300" />
 
-Partindo da configuração anterior, foi conectado o tux34 à ```Bridge31```. No final existe um rede de duas subnetworks com um dispositivo conectado nas duas.
+Partindo da configuração anterior, foi conectado o gnu34 à ```Bridge31```. No final existe um rede de duas subnetworks com um dispositivo conectado nas duas.
 
 #### Objetivos da Experiência
 
-Esta experiência tem como objetivo a configuração de um dispositivo em duas redes de tal forma que seja possível a troca de informação entre as duas redes. No final, será possível através do `tux33` chegar ao `tux32` através do `tux34`.
+Esta experiência tem como objetivo a configuração de um dispositivo em duas redes de tal forma que seja possível a troca de informação entre as duas redes. No final, será possível através do `gnu33` chegar ao `gnu32` através do `gnu34`.
 
 #### Principais comandos de configuração
 
 ```bash!
-route add -net 172.16.30.0/24 gw 172.16.31.253 #tux32
-route add -net 172.16.31.0/24 gw 172.16.30.254 #tux33
+route add -net 172.16.30.0/24 gw 172.16.31.253 #gnu32
+route add -net 172.16.31.0/24 gw 172.16.30.254 #gnu33
 
-sysctl net.ipv4.ip_forward=1 #tux34
-sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 #tux34
+sysctl net.ipv4.ip_forward=1 #gnu34
+sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 #gnu34
 ```
 
 #### Análise dos logs
@@ -233,9 +235,9 @@ Esta experiência tem como objetivo a adição de conexão à internet na rede c
 #### Principais comandos de configuração
 
 ```bash!
-route add default gw 172.16.31.254 #tux32
-route add default gw 172.16.30.254 #tux33
-route add default gw 172.16.31.254 #tux34
+route add default gw 172.16.31.254 #gnu32
+route add default gw 172.16.30.254 #gnu33
+route add default gw 172.16.31.254 #gnu34
 
 # Router
 /ip route add dst-address=172.16.30.0/24 gateway=172.16.31.253
@@ -244,12 +246,12 @@ route add default gw 172.16.31.254 #tux34
 
 #### Análise dos logs
 
-Testámos a comunicação do `tux32` para o `tux33` em duas situações diferentes: sem e com o `tux34` como intermediário.
+Testámos a comunicação do `gnu32` para o `gnu33` em duas situações diferentes: sem e com o `gnu34` como intermediário.
 Na primeira situação, tendo desativado os redirecionamentos ICMP, a comunicação é feita pela rota _default_, sendo os pacotes reencaminhados pelo _router_ configurado na `bridge31`. Assim, o seu percurso é:
-`tux32`→`router`→`tux34`→`tux33`.
-Já na segunda situação, reativando os redirecionamentos ICMP, a comunicação é feita de novo usando o `tux34` imediatamente como intermediário, sendo portanto mais curta (sem recurso à rota _default_). O percurso é então:`tux32`→`tux34`→`tux33`.
+`gnu32`→`router`→`gnu34`→`gnu33`.
+Já na segunda situação, reativando os redirecionamentos ICMP, a comunicação é feita de novo usando o `gnu34` imediatamente como intermediário, sendo portanto mais curta (sem recurso à rota _default_). O percurso é então:`gnu32`→`gnu34`→`gnu33`.
 
-Depois tentámos enviar pacotes _ping_ do `tux33` para o `router`, sendo apenas possível se este tiver ativado o NAT.
+Depois tentámos enviar pacotes _ping_ do `gnu33` para o `router`, sendo apenas possível se este tiver ativado o NAT.
 > O NAT (_Network Adress Translation_) é um processo de mapeamento de endereços IP privados em endereços IP públicos, permitindo que dispositivos de uma LAN se liguem à rede externa sem revelar o seu endereço privado.
 > A comunicação entre a rede interna e a rede externa é sempre feita usando essa interface entre endereços públicos e privados.
 
@@ -267,12 +269,12 @@ A arquitetura mantem-se igual à da experiência anterior.
 
 #### Objetivos da Experiência
 
-Esta experiência tem como objetivo a configuração do DNS (Domain Name Service) nos dispositivos `tux32`, `tux33` e `tux34`. Espera-se que depois da configuração do DNS, através da adição de um sistema de DNS, seja possível conhecer os IPs de determinados domínios.
+Esta experiência tem como objetivo a configuração do DNS (Domain Name Service) nos dispositivos `gnu32`, `gnu33` e `gnu34`. Espera-se que depois da configuração do DNS, através da adição de um sistema de DNS, seja possível conhecer os IPs de determinados domínios.
 
 #### Principais comandos de configuração
 
 ```bash!
-echo 'nameserver 193.136.28.10' > /etc/resolv.conf # tux 32, 33 e 34
+echo 'nameserver 193.136.28.10' > /etc/resolv.conf # gnu 32, 33 e 34
 ```
 
 #### Análise dos logs
