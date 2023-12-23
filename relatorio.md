@@ -121,7 +121,7 @@ ifconfig eth0 172.16.30.254/24 #gnu34
 ```
 
 #### Análise dos logs
-> A captura encontra-se na pasta `logs/exp1`.
+> A captura encontra-se na pasta `logs/exp1` e no `Anexo 1`.
 
 Tratou-se depois de verificar a conectividade entre as duas máquinas, gerando sinais do `gnu33` para o `gnu34`
 
@@ -182,7 +182,7 @@ ifconfig eth0 172.16.31.1/24
 ```
 
 #### Análise dos logs
-> As capturas encontram-se na pasta `logs/exp2`.
+> As capturas encontram-se na pasta `logs/exp2` e nos `Anexos 2.1 a 2.7`.
 
 Depois da configuração verificámos que há 2 domínios de _broadcast_. A partir do `gnu33` conseguimos dar _ping_ ao `gnu34` mas não ao `gnu32` (sendo inclusivamente reportada uma reposta negativa).
 
@@ -220,7 +220,7 @@ sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 #gnu34
 ```
 
 #### Análise dos logs
-> As capturas encontram-se na pasta `logs/exp3`.
+> As capturas encontram-se na pasta `logs/exp3` e nos `Anexos 3.1 a 3.3`.
 
 Após configurar o `gnu34` para que esteja incluído em ambas as redes dos `gnu32` e `gnu33`, verificamos que estes conseguem enviar sinais _ping_ de um para o outro e, portanto, a configuração foi bem sucedida. Verificamos também que o `gnu34` está configurado em ambas as máquinas como _default gateway_ para endereços de redes que não pertencem à sua.
 Os pacotes ARP e ICMP, computados no `gnu34`, contêm o endereço IP da máquina de destino mas o endereço MAC do `gnu34`, uma vez que este trata do redirecionamento da informação entre as duas redes criadas. As tabelas de encaminhamento geradas através da criação das rotas garante que por cada IP de destino, existe outro endereço IP (_gateway_) para onde a máquina de origem deve reencaminhar a informação.
@@ -253,7 +253,7 @@ route add default gw 172.16.31.254 #gnu34
 ```
 
 #### Análise dos logs
-> As capturas encontram-se na pasta `logs/exp4`.
+> As capturas encontram-se na pasta `logs/exp4` e nos `Anexos 4.1 e 4.2`.
 
 Testámos a comunicação do `gnu32` para o `gnu33` em duas situações diferentes: sem e com o `gnu34` como intermediário.
 Na primeira situação, tendo desativado os redirecionamentos ICMP, a comunicação é feita pela rota _default_, sendo os pacotes reencaminhados pelo _router_ configurado na `bridge31`. Assim, o seu percurso é:
@@ -307,13 +307,15 @@ make run
 ```
 
 #### Análise dos logs
-> O gráfico resultante da captura encontra-se na pasta `logs/exp6`.
+> O gráfico resultante da captura encontra-se na pasta `logs/exp6` e no `Anexo 6`.
 
 Para realizar a transferência de um ficheiro, são abertas duas ligações TCP: uma ligação de controlo e outra para proceder à efetiva receção do ficheiro.
 Uma ligação começa com uma procura DNS que visa encontrar o endereço IP do servidor associado ao nome indicado (por meio de pacotes `DNS`). Depois é estabelecido o TCP _handshake_ (com pacotes `SYN-ACK`), de forma a indicar que os servidores estão prontos para se comunicar e podem começar a fazê-lo (usando pacotes `DATA` para a receção de tramas de informação).
 O protocolo TCP usa o mecanismo ARQ (_Automatic Repeat Request_) para monitorizar a correta receção dos pacotes (por meio de mensagens `ACK`) e eventuais falhas no envio dos mesmos e necessidade de retransmissão (por meio de _timeouts_).
 Pacotes TCP têm dois campos importantes: `"Sequence number"` e `"Sequence number (raw)"`. Estes campos são importantes para controlar a receção de respostas e possíveis falhas no envio de pacotes. Os campos `"Acnowledgement number"` e `"Ackownledgement number (raw)"` indicam de que forma um pacote foi aceite. Um pacote não ser corretamente recebido depois de 3 tentativas de envio é um indício de que a rede está congestionada e a conexão sofre uma redução do número de pacotes transferidos - de modo a reduzir o efeito de congestionamente da rede.
 Devido ao mecanismo de controlo da congestão, e pela análiose do gráfico capturado verifica-se que o fluxo de transferência é consideravelmente inferior quando existe uma segunda conexão TCP.
+
+<div style="page-break-after: always;"></div>
 
 ## Conclusões
 
@@ -339,3 +341,59 @@ O código da applicação cliente FTP que faz transferência de ficheiros encont
 Os logs capturados encontram-se divididos por experiências na pasta `logs`.
 
 Foram sequencialmente listados todos os comandos necessários para a configuração da rede de computadores final na pasta `lab-steup`.
+
+<img src="https://hackmd.io/_uploads/HkP2x1rvT.png" width="600"/>
+
+_Anexo 1.1_
+
+<img src="https://hackmd.io/_uploads/BklxbJrD6.png" width="600"/>
+
+_Anexo 2.1_
+
+<img src="https://hackmd.io/_uploads/rJ4S-kSw6.png" width="600"/>
+
+_Anexo 2.2_
+
+<img src="https://hackmd.io/_uploads/Sktib1SDa.png" width="600"/>
+
+_Anexo 2.3_
+
+<img src="https://hackmd.io/_uploads/rkSHMJBvT.png" width="600"/>
+
+_Anexo 2.4_
+
+<img src="https://hackmd.io/_uploads/rymMMJrDa.png" width="600"/>
+
+_Anexo 2.5_
+
+<img src="https://hackmd.io/_uploads/BJ4wGJSvp.png" width="600"/>
+
+_Anexo 2.6_
+
+<img src="https://hackmd.io/_uploads/Byz9G1BvT.png" width="600"/>
+
+_Anexo 2.7_
+
+<img src="https://hackmd.io/_uploads/B1A3M1Bwa.png" width="600"/>
+
+_Anexo 3.1_
+
+<img src="https://hackmd.io/_uploads/BkmJmyrPa.png" width="600"/>
+
+_Anexo 3.2_
+
+<img src="https://hackmd.io/_uploads/r1AMX1SDa.png" width="600"/>
+
+_Anexo 3.3_
+
+<img src="https://hackmd.io/_uploads/H1VPm1Svp.png" width="600"/>
+
+_Anexo 4.1_
+
+<img src="https://hackmd.io/_uploads/S1F3myHPp.png" width="600"/>
+
+_Anexo 4.2_
+
+<img src="https://hackmd.io/_uploads/S1EWEkSwp.png" width="600"/>
+
+_Anexo 6_
