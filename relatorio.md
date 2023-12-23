@@ -95,6 +95,8 @@ Mostramos, seguidamente, a execução bem sucedida de uma transferência:
 
 <img src="https://hackmd.io/_uploads/Sya1bsEwa.jpg" height="300">
 
+<div style="page-break-after: always;"></div>
+
 ## Parte 2 - Configuração e estudo de uma rede
 
 ### Experiência 1 - Configurar uma rede IP
@@ -146,7 +148,7 @@ No processo do comando _ping_, o `gnu33` envia primeiramente um pedido ARP para 
 
 #### Arquitetura da rede
 
-<img src="https://hackmd.io/_uploads/HkHF-_VI6.png" height="300" />
+<img src="https://hackmd.io/_uploads/H1lY-iEv6.png" height="300" />
 
 No mesmo switch existem duas subnetworks separadas, a `bridge30` e a `bridge31`, os dispositivos anteriormente conectaods pertencem à primeira e liga-se um novo dispositivo `gnu32` à segunda subnetwork `bridge31`.
 
@@ -197,7 +199,7 @@ Verificamos assim que se configuraram 2 sub-redes diferentes.
 
 #### Arquitetura da rede
 
-<img src="https://hackmd.io/_uploads/BkfJGdNLp.png" height="300" />
+<img src="https://hackmd.io/_uploads/B1qyzsNvp.png" height="300" />
 
 Partindo da configuração anterior, foi conectado o gnu34 à ```Bridge31```. No final existe um rede de duas subnetworks com um dispositivo conectado nas duas.
 
@@ -217,13 +219,16 @@ sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 #gnu34
 
 #### Análise dos logs
 
-Durante a experiência capturámos ...
+Após configurar o `gnu34` para que esteja incluído em ambas as redes dos `gnu32` e `gnu33`, verificamos que estes conseguem enviar sinais _ping_ de um para o outro e, portanto, a configuração foi bem sucedida. Verificamos também que o `gnu34` está configurado em ambas as máquinas como _default gateway_ para endereços de redes que não pertencem à sua.
+Os pacotes ARP e ICMP, computados no `gnu34`, contêm o endereço IP da máquina de destino mas o endereço MAC do `gnu34`, uma vez que este trata do redirecionamento da informação entre as duas redes criadas. As tabelas de encaminhamento geradas através da criação das rotas garante que por cada IP de destino, existe outro endereço IP (_gateway_) para onde a máquina de origem deve reencaminhar a informação.
+
+<div style="page-break-after: always;"></div>
 
 ### Experiência 4 - Configurar um _router_ comercial implementando NAT
 
 #### Arquitetura da rede
 
-<img src="https://hackmd.io/_uploads/S1Ldg_NUT.png" height="300" />
+<img src="https://hackmd.io/_uploads/Bk7JMs4v6.png" height="300" />
 
 Na arquitetura anterior adiciona-se um novo dispositivo, `Router` na subrede `bridge31`.
 Este _router_ está conectado à internet do laboratório.
@@ -257,13 +262,11 @@ Depois tentámos enviar pacotes _ping_ do `gnu33` para o `router`, sendo apenas 
 
 Se um dispositivo da rede privada enviar um pedido para a Internet, este é feito com o endereço público mapeado no _router_ por meio do NAT e a reposta terá como destino o mesmo endereço, que depois é encaminhado para o endereço privado mapeado.
 
-Como NAT ativado, verificamos então que existe acesso à internet na rede que temos vindo a confugurar.
+Como NAT ativado, verificamos então que existe acesso à internet na rede que temos vindo a configurar.
 
 ### Experiência 5 - DNS
 
 #### Arquitetura da rede
-
-<img src="https://hackmd.io/_uploads/S1Ldg_NUT.png" height="300" />
 
 A arquitetura mantem-se igual à da experiência anterior.
 
@@ -274,7 +277,7 @@ Esta experiência tem como objetivo a configuração do DNS (Domain Name Service
 #### Principais comandos de configuração
 
 ```bash!
-echo 'nameserver 193.136.28.10' > /etc/resolv.conf # gnu 32, 33 e 34
+echo 'nameserver 193.136.28.10' > /etc/resolv.conf #gnu 32, 33 e 34
 ```
 
 #### Análise dos logs
@@ -284,8 +287,6 @@ Durante a experiência analisamos os logs resultantes de alguns pings a domínio
 ### Experiência 6 - Conexões TCP
 
 #### Arquitetura da rede
-
-<img src="https://hackmd.io/_uploads/S1Ldg_NUT.png" height="300" />
 
 A arquitetura mantem-se igual à da experiência anterior.
 
