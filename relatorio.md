@@ -20,7 +20,7 @@ O programa recebe um argumento, um URL no seguinte formato:
 ftp://[<username>:<password>@]<host>[:<port>]/<url-path>
 ```
 
-Este URL indica, segundo o RFC1738, todas as informações necessárias bem como opcionais, para transferir o ficheiro. Os dois únicos parametros obrigatórios são o host e o url-path, este último sendo o caminho para o ficheiro pretendido. Os restantes parametros são valores padrão que o usuário tem a liberdade de adicionar neste URL.
+Este URL indica, segundo o RFC1738, todas as informações necessárias bem como opcionais, para transferir o ficheiro. Os dois únicos parametros obrigatórios são o host e o url-path, este último sendo o caminho para o ficheiro pretendido. Os restantes parametros são valores padrão que o utilizador tem a liberdade de adicionar neste URL.
 
 ### Arquitetura
 
@@ -54,7 +54,7 @@ Pega-se nas informações anteriormente extraidas e conecta-se ao servidor remot
 O uso de ```getaddrinfo``` revela-se ser mais flexivel que outros como ```gethostbyname```.
 
 A autenticação no servidor é feita através dos comandos ```USER``` e ```PASS```.
-Todas as mensagens recebidas incluiem um código de 3 dígitos que é lido e utilzado para a confirmação do seguimento do fluxo pretendido. Por exemplo, espera-se ler o código [```230```](https://www.rfc-editor.org/rfc/rfc959.html#section-4) assim que a autenticação seja bem sucessida.
+Todas as mensagens recebidas incluiem um código de 3 dígitos que é lido e utilzado para a confirmação do seguimento do fluxo pretendido. Por exemplo, espera-se ler o código [```230```](https://www.rfc-editor.org/rfc/rfc959.html#section-4) assim que a autenticação seja bem sucedida.
 
 3. Entrar no modo passivo
 
@@ -121,6 +121,7 @@ ifconfig eth0 172.16.30.254/24 #gnu34
 ```
 
 #### Análise dos logs
+> A captura encontra-se na pasta `logs/exp1`.
 
 Tratou-se depois de verificar a conectividade entre as duas máquinas, gerando sinais do `gnu33` para o `gnu34`
 
@@ -181,6 +182,7 @@ ifconfig eth0 172.16.31.1/24
 ```
 
 #### Análise dos logs
+> As capturas encontram-se na pasta `logs/exp2`.
 
 Depois da configuração verificámos que há 2 domínios de _broadcast_. A partir do `gnu33` conseguimos dar _ping_ ao `gnu34` mas não ao `gnu32` (sendo inclusivamente reportada uma reposta negativa).
 
@@ -218,6 +220,7 @@ sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 #gnu34
 ```
 
 #### Análise dos logs
+> As capturas encontram-se na pasta `logs/exp3`.
 
 Após configurar o `gnu34` para que esteja incluído em ambas as redes dos `gnu32` e `gnu33`, verificamos que estes conseguem enviar sinais _ping_ de um para o outro e, portanto, a configuração foi bem sucedida. Verificamos também que o `gnu34` está configurado em ambas as máquinas como _default gateway_ para endereços de redes que não pertencem à sua.
 Os pacotes ARP e ICMP, computados no `gnu34`, contêm o endereço IP da máquina de destino mas o endereço MAC do `gnu34`, uma vez que este trata do redirecionamento da informação entre as duas redes criadas. As tabelas de encaminhamento geradas através da criação das rotas garante que por cada IP de destino, existe outro endereço IP (_gateway_) para onde a máquina de origem deve reencaminhar a informação.
@@ -250,6 +253,7 @@ route add default gw 172.16.31.254 #gnu34
 ```
 
 #### Análise dos logs
+> As capturas encontram-se na pasta `logs/exp4`.
 
 Testámos a comunicação do `gnu32` para o `gnu33` em duas situações diferentes: sem e com o `gnu34` como intermediário.
 Na primeira situação, tendo desativado os redirecionamentos ICMP, a comunicação é feita pela rota _default_, sendo os pacotes reencaminhados pelo _router_ configurado na `bridge31`. Assim, o seu percurso é:
@@ -303,12 +307,13 @@ make run
 ```
 
 #### Análise dos logs
+> O gráfico resultante da captura encontra-se na pasta `logs/exp6`.
 
 Para realizar a transferência de um ficheiro, são abertas duas ligações TCP: uma ligação de controlo e outra para proceder à efetiva receção do ficheiro.
 Uma ligação começa com uma procura DNS que visa encontrar o endereço IP do servidor associado ao nome indicado (por meio de pacotes `DNS`). Depois é estabelecido o TCP _handshake_ (com pacotes `SYN-ACK`), de forma a indicar que os servidores estão prontos para se comunicar e podem começar a fazê-lo (usando pacotes `DATA` para a receção de tramas de informação).
 O protocolo TCP usa o mecanismo ARQ (_Automatic Repeat Request_) para monitorizar a correta receção dos pacotes (por meio de mensagens `ACK`) e eventuais falhas no envio dos mesmos e necessidade de retransmissão (por meio de _timeouts_).
 Pacotes TCP têm dois campos importantes: `"Sequence number"` e `"Sequence number (raw)"`. Estes campos são importantes para controlar a receção de respostas e possíveis falhas no envio de pacotes. Os campos `"Acnowledgement number"` e `"Ackownledgement number (raw)"` indicam de que forma um pacote foi aceite. Um pacote não ser corretamente recebido depois de 3 tentativas de envio é um indício de que a rede está congestionada e a conexão sofre uma redução do número de pacotes transferidos - de modo a reduzir o efeito de congestionamente da rede.
-Devido ao mecanismo de controlo da congestão, verifica-se que o fluxo de transferência é consideravelmente inferior quando existe uma segunda conexão TCP.
+Devido ao mecanismo de controlo da congestão, e pela análiose do gráfico capturado verifica-se que o fluxo de transferência é consideravelmente inferior quando existe uma segunda conexão TCP.
 
 ## Conclusões
 
