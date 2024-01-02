@@ -20,3 +20,5 @@ Lab 2
 All the code can be found in [main.c](/main.c) file and [src](/src/) folder.
 
 2. Configuration and study of a computer network by connecting multiple computers to a Mikrotik switch and a Mikrotik router. Use of the Wireshark tool to capture and analyze network traffic.
+Final network topology:
+![Network Topology](/images/exp4.png)
