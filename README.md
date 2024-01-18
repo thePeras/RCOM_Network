@@ -11,7 +11,7 @@ Lab 2
 ><br />
 > Report: [.md](report.md) or [.pdf](report.pdf)
 ><br/>
-> Project evaluation: **_**/20
+> Project evaluation: **16**/20
 
 
 ## Project Goals
